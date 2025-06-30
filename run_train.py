@@ -18,21 +18,31 @@ print(f"Using device: {device}")
 # model_name = "google-bert/bert-base-chinese"
 
 #使用本地的模型
-model_name = "./models/bert-base-chinese"
+model_name = "models/bert-base-chinese"
 
 # dataset = load_dataset("csv", data_files={"train": ["positive.csv", "negative.csv"], "validation": ["positive_test.csv", "negative_test.csv"]})
+# dataset = load_dataset("csv", data_files={"train": "./250625/dataset/训练集 (加反例).csv", "validation": "./250625/dataset/验证集 (加反例).csv"})
 
 #改为自己的数据集地址
-dataset = load_dataset("csv", data_files={"train": "./250625/dataset/训练集 (加反例).csv", "validation": "./250625/dataset/验证集 (加反例).csv"})
-
+dataset =  load_dataset("csv", data_files="./250625/dataset/训练集 (加反例).csv", split="train")
 #分割训练集和验证集
 # dataset = load_dataset("csv", data_files="./dataset/六个应用-整合.csv", split="train")
 # dataset = dataset.train_test_split(test_size=0.2)
 # dataset = load_dataset("json", data_files={"train": "dataset/train.json", "test": "dataset/test.json"}, field="data")
-# dataset = DatasetDict({
-#     "train": dataset["train"],
-#     "validation": dataset["test"]  
-# })
+
+val_nums = int(len(dataset) * 0.2)
+val_data = dataset.select(range(val_nums))
+train_data = dataset.select(range(val_nums, len(dataset)))
+
+dataset = DatasetDict({
+    "train": train_data,
+    "validation":  val_data
+})
+
+dataset = DatasetDict({
+    "train": train_data,
+    "validation":  val_data
+})
 print(dataset)
 
 tokenizer = AutoTokenizer.from_pretrained(model_name)
