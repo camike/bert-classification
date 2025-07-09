@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\bert_inference.dir/objects.a
+C:\mingw64\bin\ar.exe qc CMakeFiles\bert_inference.dir/objects.a @CMakeFiles\bert_inference.dir\objects1.rsp
+C:\mingw64\bin\c++.exe -Wl,--whole-archive CMakeFiles\bert_inference.dir/objects.a -Wl,--no-whole-archive -o bin\bert_inference.exe -Wl,--out-implib,libbert_inference.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\bert_inference.dir\linkLibs.rsp

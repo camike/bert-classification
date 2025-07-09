@@ -1,0 +1,1 @@
+ C:/Users/wudiz/Desktop/sort/cpp/lib/onnxruntime/lib/onnxruntime.dll -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 
