@@ -1,0 +1,1 @@
+python task_distill.py --teacher_model ../trained_model/model/ --student_model ./TinyBERT_4L_zh --data_dir ./data_dir --task_name sst-2  --output_dir ./output --max_seq_length 128 --train_batch_size 32 --num_train_epochs 50  --do_lower_case  --pred_distill
