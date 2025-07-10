@@ -12,32 +12,11 @@
 #include <algorithm>
 #include <cctype>
 
-#ifdef _WIN32
-#include <windows.h>
-#endif
-
 // 处理Unicode字符和转换的工具函数
 class UnicodeUtils {
 public:
-    // UTF-8转宽字符 - 更可靠的实现
+    // UTF-8转宽字符
     static std::wstring utf8_to_wstring(const std::string& str) {
-        if (str.empty()) {
-            return std::wstring();
-        }
-        
-#ifdef _WIN32
-        // 使用Windows API进行转换
-        int size_needed = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), (int)str.size(), NULL, 0);
-        if (size_needed <= 0) {
-            std::cerr << "UTF-8转换错误: 无法计算所需大小" << std::endl;
-            return L"";
-        }
-        
-        std::wstring result(size_needed, 0);
-        MultiByteToWideChar(CP_UTF8, 0, str.c_str(), (int)str.size(), &result[0], size_needed);
-        return result;
-#else
-        // 非Windows系统使用标准方法
         try {
             std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
             return converter.from_bytes(str);
@@ -45,36 +24,12 @@ public:
             std::cerr << "UTF-8转换错误: " << e.what() << std::endl;
             return L"";
         }
-#endif
     }
     
-    // 宽字符转UTF-8 - 更可靠的实现
+    // 宽字符转UTF-8
     static std::string wstring_to_utf8(const std::wstring& str) {
-        if (str.empty()) {
-            return std::string();
-        }
-        
-#ifdef _WIN32
-        // 使用Windows API进行转换
-        int size_needed = WideCharToMultiByte(CP_UTF8, 0, str.c_str(), (int)str.size(), NULL, 0, NULL, NULL);
-        if (size_needed <= 0) {
-            std::cerr << "宽字符转换错误: 无法计算所需大小" << std::endl;
-            return "";
-        }
-        
-        std::string result(size_needed, 0);
-        WideCharToMultiByte(CP_UTF8, 0, str.c_str(), (int)str.size(), &result[0], size_needed, NULL, NULL);
-        return result;
-#else
-        // 非Windows系统使用标准方法
-        try {
             std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
             return converter.to_bytes(str);
-        } catch (const std::exception& e) {
-            std::cerr << "宽字符转换错误: " << e.what() << std::endl;
-            return "";
-        }
-#endif
     }
     
     // 检查字符是否是空白字符
@@ -144,11 +99,7 @@ private:
 
     // 清理文本 - 移除控制字符，规范化空白
     std::string clean_text(const std::string& text) {
-        std::cout << "原始输入: '" << text << "'" << std::endl;
-        
         std::wstring wtext = UnicodeUtils::utf8_to_wstring(text);
-        std::cout << "转换后宽字符长度: " << wtext.size() << std::endl;
-        
         std::wstring cleaned;
         
         for (wchar_t c : wtext) {
@@ -162,9 +113,7 @@ private:
             }
         }
         
-        std::string result = UnicodeUtils::wstring_to_utf8(cleaned);
-        std::cout << "清理后文本: '" << result << "'" << std::endl;
-        return result;
+        return UnicodeUtils::wstring_to_utf8(cleaned);
     }
 
     // 基本分词 - 更接近HuggingFace的BasicTokenizer
@@ -174,13 +123,11 @@ private:
         
         // 2. 转换为宽字符进行处理
         std::wstring wtext = UnicodeUtils::utf8_to_wstring(cleaned_text);
-        std::cout << "基本分词 - 宽字符长度: " << wtext.size() << std::endl;
         
         // 3. 在中文字符周围添加空格
         std::wstring spaced_text;
         for (wchar_t c : wtext) {
             if (UnicodeUtils::is_chinese_char(c)) {
-                std::cout << "检测到中文字符: " << static_cast<int>(c) << std::endl;
                 spaced_text += L' ';
                 spaced_text += c;
                 spaced_text += L' ';
@@ -203,8 +150,6 @@ private:
         
         // 5. 按空白分割
         std::string final_str = UnicodeUtils::wstring_to_utf8(final_text);
-        std::cout << "空格分割前文本: '" << final_str << "'" << std::endl;
-        
         std::vector<std::string> tokens;
         std::istringstream iss(final_str);
         std::string token;
@@ -218,11 +163,6 @@ private:
                 }
                 tokens.push_back(token);
             }
-        }
-        
-        std::cout << "基本分词结果数量: " << tokens.size() << std::endl;
-        for (size_t i = 0; i < tokens.size(); ++i) {
-            std::cout << "  Token " << i << ": '" << tokens[i] << "'" << std::endl;
         }
         
         return tokens;
@@ -315,96 +255,13 @@ public:
     std::vector<std::string> tokenize(const std::string& text) {
         std::vector<std::string> tokens;
         
-        // 调试信息
-        std::cout << "开始分词，输入: '" << text << "'" << std::endl;
+        // 1. 基本分词
+        std::vector<std::string> basic_tokens = basic_tokenize(text);
         
-        // 直接检查是否包含中文字符
-        bool has_chinese = false;
-        for (unsigned char c : text) {
-            if ((c & 0x80) != 0) {  // 非ASCII字符
-                has_chinese = true;
-                break;
-            }
-        }
-        
-        if (has_chinese) {
-            std::cout << "检测到中文字符，使用单字符分词" << std::endl;
-            // 对中文文本进行单字符分词
-            std::string cleaned = clean_text(text);
-            std::string current;
-            
-            for (size_t i = 0; i < cleaned.size();) {
-                unsigned char c = cleaned[i];
-                if ((c & 0x80) == 0) {  // ASCII字符
-                    if (c == ' ' || c == '\t' || c == '\n' || c == '\r') {
-                        if (!current.empty()) {
-                            tokens.push_back(current);
-                            current.clear();
-                        }
-                    } else {
-                        current += c;
-                    }
-                    i++;
-                } else {
-                    // 处理UTF-8多字节字符
-                    if (!current.empty()) {
-                        tokens.push_back(current);
-                        current.clear();
-                    }
-                    
-                    // 获取完整的UTF-8字符
-                    std::string utf8_char;
-                    if ((c & 0xE0) == 0xC0) {  // 2字节UTF-8
-                        if (i + 1 < cleaned.size()) {
-                            utf8_char = cleaned.substr(i, 2);
-                            i += 2;
-                        } else {
-                            utf8_char = cleaned.substr(i, 1);
-                            i += 1;
-                        }
-                    } else if ((c & 0xF0) == 0xE0) {  // 3字节UTF-8
-                        if (i + 2 < cleaned.size()) {
-                            utf8_char = cleaned.substr(i, 3);
-                            i += 3;
-                        } else {
-                            utf8_char = cleaned.substr(i, 1);
-                            i += 1;
-                        }
-                    } else if ((c & 0xF8) == 0xF0) {  // 4字节UTF-8
-                        if (i + 3 < cleaned.size()) {
-                            utf8_char = cleaned.substr(i, 4);
-                            i += 4;
-                        } else {
-                            utf8_char = cleaned.substr(i, 1);
-                            i += 1;
-                        }
-                    } else {
-                        utf8_char = cleaned.substr(i, 1);
-                        i += 1;
-                    }
-                    
-                    tokens.push_back(utf8_char);
-                }
-            }
-            
-            if (!current.empty()) {
-                tokens.push_back(current);
-            }
-        } else {
-            // 1. 基本分词
-            std::vector<std::string> basic_tokens = basic_tokenize(text);
-            
-            // 2. 对每个基本token进行WordPiece分词
-            for (const auto& token : basic_tokens) {
-                std::vector<std::string> sub_tokens = wordpiece_tokenize(token);
-                tokens.insert(tokens.end(), sub_tokens.begin(), sub_tokens.end());
-            }
-        }
-        
-        // 打印分词结果
-        std::cout << "最终分词结果数量: " << tokens.size() << std::endl;
-        for (size_t i = 0; i < tokens.size(); ++i) {
-            std::cout << "  最终Token " << i << ": '" << tokens[i] << "'" << std::endl;
+        // 2. 对每个基本token进行WordPiece分词
+        for (const auto& token : basic_tokens) {
+            std::vector<std::string> sub_tokens = wordpiece_tokenize(token);
+            tokens.insert(tokens.end(), sub_tokens.begin(), sub_tokens.end());
         }
         
         return tokens;
