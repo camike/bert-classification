@@ -129,6 +129,19 @@ bert_inference/fast:
 .PHONY : bert_inference/fast
 
 #=============================================================================
+# Target rules for targets named bert_inference_csv
+
+# Build rule for target.
+bert_inference_csv: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 bert_inference_csv
+.PHONY : bert_inference_csv
+
+# fast build rule for target.
+bert_inference_csv/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_csv.dir\build.make CMakeFiles/bert_inference_csv.dir/build
+.PHONY : bert_inference_csv/fast
+
+#=============================================================================
 # Target rules for targets named bert_inference_int8
 
 # Build rule for target.
@@ -142,6 +155,19 @@ bert_inference_int8/fast:
 .PHONY : bert_inference_int8/fast
 
 #=============================================================================
+# Target rules for targets named bert_inference_int8_csv
+
+# Build rule for target.
+bert_inference_int8_csv: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 bert_inference_int8_csv
+.PHONY : bert_inference_int8_csv
+
+# fast build rule for target.
+bert_inference_int8_csv/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_int8_csv.dir\build.make CMakeFiles/bert_inference_int8_csv.dir/build
+.PHONY : bert_inference_int8_csv/fast
+
+#=============================================================================
 # Target rules for targets named bert_inference_tiny_int8
 
 # Build rule for target.
@@ -153,6 +179,45 @@ bert_inference_tiny_int8: cmake_check_build_system
 bert_inference_tiny_int8/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_tiny_int8.dir\build.make CMakeFiles/bert_inference_tiny_int8.dir/build
 .PHONY : bert_inference_tiny_int8/fast
+
+#=============================================================================
+# Target rules for targets named bert_inference_tiny_int8_csv
+
+# Build rule for target.
+bert_inference_tiny_int8_csv: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 bert_inference_tiny_int8_csv
+.PHONY : bert_inference_tiny_int8_csv
+
+# fast build rule for target.
+bert_inference_tiny_int8_csv/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_tiny_int8_csv.dir\build.make CMakeFiles/bert_inference_tiny_int8_csv.dir/build
+.PHONY : bert_inference_tiny_int8_csv/fast
+
+#=============================================================================
+# Target rules for targets named bert_inference_lmb_csv
+
+# Build rule for target.
+bert_inference_lmb_csv: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 bert_inference_lmb_csv
+.PHONY : bert_inference_lmb_csv
+
+# fast build rule for target.
+bert_inference_lmb_csv/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_lmb_csv.dir\build.make CMakeFiles/bert_inference_lmb_csv.dir/build
+.PHONY : bert_inference_lmb_csv/fast
+
+#=============================================================================
+# Target rules for targets named bert_inference_lmb_unquant_csv
+
+# Build rule for target.
+bert_inference_lmb_unquant_csv: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 bert_inference_lmb_unquant_csv
+.PHONY : bert_inference_lmb_unquant_csv
+
+# fast build rule for target.
+bert_inference_lmb_unquant_csv/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_lmb_unquant_csv.dir\build.make CMakeFiles/bert_inference_lmb_unquant_csv.dir/build
+.PHONY : bert_inference_lmb_unquant_csv/fast
 
 src/bert_inference.obj: src/bert_inference.cpp.obj
 .PHONY : src/bert_inference.obj
@@ -178,6 +243,30 @@ src/bert_inference.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference.dir\build.make CMakeFiles/bert_inference.dir/src/bert_inference.cpp.s
 .PHONY : src/bert_inference.cpp.s
 
+src/bert_inference_csv.obj: src/bert_inference_csv.cpp.obj
+.PHONY : src/bert_inference_csv.obj
+
+# target to build an object file
+src/bert_inference_csv.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_csv.dir\build.make CMakeFiles/bert_inference_csv.dir/src/bert_inference_csv.cpp.obj
+.PHONY : src/bert_inference_csv.cpp.obj
+
+src/bert_inference_csv.i: src/bert_inference_csv.cpp.i
+.PHONY : src/bert_inference_csv.i
+
+# target to preprocess a source file
+src/bert_inference_csv.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_csv.dir\build.make CMakeFiles/bert_inference_csv.dir/src/bert_inference_csv.cpp.i
+.PHONY : src/bert_inference_csv.cpp.i
+
+src/bert_inference_csv.s: src/bert_inference_csv.cpp.s
+.PHONY : src/bert_inference_csv.s
+
+# target to generate assembly for a file
+src/bert_inference_csv.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_csv.dir\build.make CMakeFiles/bert_inference_csv.dir/src/bert_inference_csv.cpp.s
+.PHONY : src/bert_inference_csv.cpp.s
+
 src/bert_inference_int8.obj: src/bert_inference_int8.cpp.obj
 .PHONY : src/bert_inference_int8.obj
 
@@ -201,6 +290,78 @@ src/bert_inference_int8.s: src/bert_inference_int8.cpp.s
 src/bert_inference_int8.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_int8.dir\build.make CMakeFiles/bert_inference_int8.dir/src/bert_inference_int8.cpp.s
 .PHONY : src/bert_inference_int8.cpp.s
+
+src/bert_inference_int8_csv.obj: src/bert_inference_int8_csv.cpp.obj
+.PHONY : src/bert_inference_int8_csv.obj
+
+# target to build an object file
+src/bert_inference_int8_csv.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_int8_csv.dir\build.make CMakeFiles/bert_inference_int8_csv.dir/src/bert_inference_int8_csv.cpp.obj
+.PHONY : src/bert_inference_int8_csv.cpp.obj
+
+src/bert_inference_int8_csv.i: src/bert_inference_int8_csv.cpp.i
+.PHONY : src/bert_inference_int8_csv.i
+
+# target to preprocess a source file
+src/bert_inference_int8_csv.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_int8_csv.dir\build.make CMakeFiles/bert_inference_int8_csv.dir/src/bert_inference_int8_csv.cpp.i
+.PHONY : src/bert_inference_int8_csv.cpp.i
+
+src/bert_inference_int8_csv.s: src/bert_inference_int8_csv.cpp.s
+.PHONY : src/bert_inference_int8_csv.s
+
+# target to generate assembly for a file
+src/bert_inference_int8_csv.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_int8_csv.dir\build.make CMakeFiles/bert_inference_int8_csv.dir/src/bert_inference_int8_csv.cpp.s
+.PHONY : src/bert_inference_int8_csv.cpp.s
+
+src/bert_inference_lmb_csv.obj: src/bert_inference_lmb_csv.cpp.obj
+.PHONY : src/bert_inference_lmb_csv.obj
+
+# target to build an object file
+src/bert_inference_lmb_csv.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_lmb_csv.dir\build.make CMakeFiles/bert_inference_lmb_csv.dir/src/bert_inference_lmb_csv.cpp.obj
+.PHONY : src/bert_inference_lmb_csv.cpp.obj
+
+src/bert_inference_lmb_csv.i: src/bert_inference_lmb_csv.cpp.i
+.PHONY : src/bert_inference_lmb_csv.i
+
+# target to preprocess a source file
+src/bert_inference_lmb_csv.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_lmb_csv.dir\build.make CMakeFiles/bert_inference_lmb_csv.dir/src/bert_inference_lmb_csv.cpp.i
+.PHONY : src/bert_inference_lmb_csv.cpp.i
+
+src/bert_inference_lmb_csv.s: src/bert_inference_lmb_csv.cpp.s
+.PHONY : src/bert_inference_lmb_csv.s
+
+# target to generate assembly for a file
+src/bert_inference_lmb_csv.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_lmb_csv.dir\build.make CMakeFiles/bert_inference_lmb_csv.dir/src/bert_inference_lmb_csv.cpp.s
+.PHONY : src/bert_inference_lmb_csv.cpp.s
+
+src/bert_inference_lmb_unquant_csv.obj: src/bert_inference_lmb_unquant_csv.cpp.obj
+.PHONY : src/bert_inference_lmb_unquant_csv.obj
+
+# target to build an object file
+src/bert_inference_lmb_unquant_csv.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_lmb_unquant_csv.dir\build.make CMakeFiles/bert_inference_lmb_unquant_csv.dir/src/bert_inference_lmb_unquant_csv.cpp.obj
+.PHONY : src/bert_inference_lmb_unquant_csv.cpp.obj
+
+src/bert_inference_lmb_unquant_csv.i: src/bert_inference_lmb_unquant_csv.cpp.i
+.PHONY : src/bert_inference_lmb_unquant_csv.i
+
+# target to preprocess a source file
+src/bert_inference_lmb_unquant_csv.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_lmb_unquant_csv.dir\build.make CMakeFiles/bert_inference_lmb_unquant_csv.dir/src/bert_inference_lmb_unquant_csv.cpp.i
+.PHONY : src/bert_inference_lmb_unquant_csv.cpp.i
+
+src/bert_inference_lmb_unquant_csv.s: src/bert_inference_lmb_unquant_csv.cpp.s
+.PHONY : src/bert_inference_lmb_unquant_csv.s
+
+# target to generate assembly for a file
+src/bert_inference_lmb_unquant_csv.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_lmb_unquant_csv.dir\build.make CMakeFiles/bert_inference_lmb_unquant_csv.dir/src/bert_inference_lmb_unquant_csv.cpp.s
+.PHONY : src/bert_inference_lmb_unquant_csv.cpp.s
 
 src/bert_inference_tiny_int8.obj: src/bert_inference_tiny_int8.cpp.obj
 .PHONY : src/bert_inference_tiny_int8.obj
@@ -226,6 +387,30 @@ src/bert_inference_tiny_int8.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_tiny_int8.dir\build.make CMakeFiles/bert_inference_tiny_int8.dir/src/bert_inference_tiny_int8.cpp.s
 .PHONY : src/bert_inference_tiny_int8.cpp.s
 
+src/bert_inference_tiny_int8_csv.obj: src/bert_inference_tiny_int8_csv.cpp.obj
+.PHONY : src/bert_inference_tiny_int8_csv.obj
+
+# target to build an object file
+src/bert_inference_tiny_int8_csv.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_tiny_int8_csv.dir\build.make CMakeFiles/bert_inference_tiny_int8_csv.dir/src/bert_inference_tiny_int8_csv.cpp.obj
+.PHONY : src/bert_inference_tiny_int8_csv.cpp.obj
+
+src/bert_inference_tiny_int8_csv.i: src/bert_inference_tiny_int8_csv.cpp.i
+.PHONY : src/bert_inference_tiny_int8_csv.i
+
+# target to preprocess a source file
+src/bert_inference_tiny_int8_csv.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_tiny_int8_csv.dir\build.make CMakeFiles/bert_inference_tiny_int8_csv.dir/src/bert_inference_tiny_int8_csv.cpp.i
+.PHONY : src/bert_inference_tiny_int8_csv.cpp.i
+
+src/bert_inference_tiny_int8_csv.s: src/bert_inference_tiny_int8_csv.cpp.s
+.PHONY : src/bert_inference_tiny_int8_csv.s
+
+# target to generate assembly for a file
+src/bert_inference_tiny_int8_csv.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\bert_inference_tiny_int8_csv.dir\build.make CMakeFiles/bert_inference_tiny_int8_csv.dir/src/bert_inference_tiny_int8_csv.cpp.s
+.PHONY : src/bert_inference_tiny_int8_csv.cpp.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -235,17 +420,37 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... bert_inference
+	@echo ... bert_inference_csv
 	@echo ... bert_inference_int8
+	@echo ... bert_inference_int8_csv
+	@echo ... bert_inference_lmb_csv
+	@echo ... bert_inference_lmb_unquant_csv
 	@echo ... bert_inference_tiny_int8
+	@echo ... bert_inference_tiny_int8_csv
 	@echo ... src/bert_inference.obj
 	@echo ... src/bert_inference.i
 	@echo ... src/bert_inference.s
+	@echo ... src/bert_inference_csv.obj
+	@echo ... src/bert_inference_csv.i
+	@echo ... src/bert_inference_csv.s
 	@echo ... src/bert_inference_int8.obj
 	@echo ... src/bert_inference_int8.i
 	@echo ... src/bert_inference_int8.s
+	@echo ... src/bert_inference_int8_csv.obj
+	@echo ... src/bert_inference_int8_csv.i
+	@echo ... src/bert_inference_int8_csv.s
+	@echo ... src/bert_inference_lmb_csv.obj
+	@echo ... src/bert_inference_lmb_csv.i
+	@echo ... src/bert_inference_lmb_csv.s
+	@echo ... src/bert_inference_lmb_unquant_csv.obj
+	@echo ... src/bert_inference_lmb_unquant_csv.i
+	@echo ... src/bert_inference_lmb_unquant_csv.s
 	@echo ... src/bert_inference_tiny_int8.obj
 	@echo ... src/bert_inference_tiny_int8.i
 	@echo ... src/bert_inference_tiny_int8.s
+	@echo ... src/bert_inference_tiny_int8_csv.obj
+	@echo ... src/bert_inference_tiny_int8_csv.i
+	@echo ... src/bert_inference_tiny_int8_csv.s
 .PHONY : help
 
 

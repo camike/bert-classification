@@ -220,6 +220,44 @@ CMakeFiles/bert_inference_int8.dir/src/bert_inference_int8.cpp.obj: \
  C:/mingw64/include/c++/15.1.0/bits/regex.tcc \
  C:/mingw64/include/c++/15.1.0/bits/regex_executor.h \
  C:/mingw64/include/c++/15.1.0/bits/regex_executor.tcc \
+ C:/Users/wudiz/Desktop/sort/cpp/lib/onnxruntime/include/onnxruntime_cxx_api.h \
+ C:/Users/wudiz/Desktop/sort/cpp/lib/onnxruntime/include/onnxruntime_c_api.h \
+ C:/mingw64/x86_64-w64-mingw32/include/string.h \
+ C:/mingw64/x86_64-w64-mingw32/include/sec_api/string_s.h \
+ C:/mingw64/x86_64-w64-mingw32/include/specstrings.h \
+ C:/mingw64/x86_64-w64-mingw32/include/sal.h \
+ C:/mingw64/x86_64-w64-mingw32/include/concurrencysal.h \
+ C:/mingw64/x86_64-w64-mingw32/include/driverspecs.h \
+ C:/Users/wudiz/Desktop/sort/cpp/lib/onnxruntime/include/onnxruntime_float16.h \
+ C:/mingw64/include/c++/15.1.0/cmath \
+ C:/mingw64/x86_64-w64-mingw32/include/math.h \
+ C:/mingw64/include/c++/15.1.0/bits/specfun.h \
+ C:/mingw64/include/c++/15.1.0/tr1/gamma.tcc \
+ C:/mingw64/include/c++/15.1.0/tr1/special_function_util.h \
+ C:/mingw64/include/c++/15.1.0/tr1/bessel_function.tcc \
+ C:/mingw64/include/c++/15.1.0/tr1/beta_function.tcc \
+ C:/mingw64/include/c++/15.1.0/tr1/ell_integral.tcc \
+ C:/mingw64/include/c++/15.1.0/tr1/exp_integral.tcc \
+ C:/mingw64/include/c++/15.1.0/tr1/hypergeometric.tcc \
+ C:/mingw64/include/c++/15.1.0/tr1/legendre_function.tcc \
+ C:/mingw64/include/c++/15.1.0/tr1/modified_bessel_func.tcc \
+ C:/mingw64/include/c++/15.1.0/tr1/poly_hermite.tcc \
+ C:/mingw64/include/c++/15.1.0/tr1/poly_laguerre.tcc \
+ C:/mingw64/include/c++/15.1.0/tr1/riemann_zeta.tcc \
+ C:/mingw64/include/c++/15.1.0/cstring \
+ C:/mingw64/include/c++/15.1.0/array \
+ C:/mingw64/include/c++/15.1.0/compare \
+ C:/mingw64/include/c++/15.1.0/memory \
+ C:/mingw64/include/c++/15.1.0/bits/stl_raw_storage_iter.h \
+ C:/mingw64/include/c++/15.1.0/bits/align.h \
+ C:/mingw64/include/c++/15.1.0/bits/shared_ptr_atomic.h \
+ C:/mingw64/include/c++/15.1.0/bits/atomic_base.h \
+ C:/mingw64/include/c++/15.1.0/bits/atomic_lockfree_defines.h \
+ C:/mingw64/include/c++/15.1.0/backward/auto_ptr.h \
+ C:/mingw64/include/c++/15.1.0/pstl/glue_memory_defs.h \
+ C:/mingw64/include/c++/15.1.0/utility \
+ C:/mingw64/include/c++/15.1.0/bits/stl_relops.h \
+ C:/Users/wudiz/Desktop/sort/cpp/lib/onnxruntime/include/onnxruntime_cxx_inline.h \
  C:/mingw64/x86_64-w64-mingw32/include/windows.h \
  C:/mingw64/x86_64-w64-mingw32/include/sdkddkver.h \
  C:/mingw64/x86_64-w64-mingw32/include/excpt.h \
@@ -229,18 +267,12 @@ CMakeFiles/bert_inference_int8.dir/src/bert_inference_int8.cpp.obj: \
  C:/mingw64/x86_64-w64-mingw32/include/windef.h \
  C:/mingw64/x86_64-w64-mingw32/include/winapifamily.h \
  C:/mingw64/x86_64-w64-mingw32/include/minwindef.h \
- C:/mingw64/x86_64-w64-mingw32/include/specstrings.h \
- C:/mingw64/x86_64-w64-mingw32/include/sal.h \
- C:/mingw64/x86_64-w64-mingw32/include/concurrencysal.h \
- C:/mingw64/x86_64-w64-mingw32/include/driverspecs.h \
  C:/mingw64/x86_64-w64-mingw32/include/winnt.h \
  C:/mingw64/x86_64-w64-mingw32/include/_mingw_unicode.h \
  C:/mingw64/x86_64-w64-mingw32/include/apiset.h \
  C:/mingw64/x86_64-w64-mingw32/include/psdk_inc/intrin-impl.h \
  C:/mingw64/x86_64-w64-mingw32/include/basetsd.h \
  C:/mingw64/x86_64-w64-mingw32/include/guiddef.h \
- C:/mingw64/x86_64-w64-mingw32/include/string.h \
- C:/mingw64/x86_64-w64-mingw32/include/sec_api/string_s.h \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/x86intrin.h \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/x86gprintrin.h \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.1.0/include/ia32intrin.h \
@@ -484,36 +516,4 @@ CMakeFiles/bert_inference_int8.dir/src/bert_inference_int8.cpp.obj: \
  C:/mingw64/x86_64-w64-mingw32/include/winsvc.h \
  C:/mingw64/x86_64-w64-mingw32/include/mcx.h \
  C:/mingw64/x86_64-w64-mingw32/include/imm.h \
- C:/Users/wudiz/Desktop/sort/cpp/lib/onnxruntime/include/onnxruntime_cxx_api.h \
- C:/Users/wudiz/Desktop/sort/cpp/lib/onnxruntime/include/onnxruntime_c_api.h \
- C:/Users/wudiz/Desktop/sort/cpp/lib/onnxruntime/include/onnxruntime_float16.h \
- C:/mingw64/include/c++/15.1.0/cmath \
- C:/mingw64/x86_64-w64-mingw32/include/math.h \
- C:/mingw64/include/c++/15.1.0/bits/specfun.h \
- C:/mingw64/include/c++/15.1.0/tr1/gamma.tcc \
- C:/mingw64/include/c++/15.1.0/tr1/special_function_util.h \
- C:/mingw64/include/c++/15.1.0/tr1/bessel_function.tcc \
- C:/mingw64/include/c++/15.1.0/tr1/beta_function.tcc \
- C:/mingw64/include/c++/15.1.0/tr1/ell_integral.tcc \
- C:/mingw64/include/c++/15.1.0/tr1/exp_integral.tcc \
- C:/mingw64/include/c++/15.1.0/tr1/hypergeometric.tcc \
- C:/mingw64/include/c++/15.1.0/tr1/legendre_function.tcc \
- C:/mingw64/include/c++/15.1.0/tr1/modified_bessel_func.tcc \
- C:/mingw64/include/c++/15.1.0/tr1/poly_hermite.tcc \
- C:/mingw64/include/c++/15.1.0/tr1/poly_laguerre.tcc \
- C:/mingw64/include/c++/15.1.0/tr1/riemann_zeta.tcc \
- C:/mingw64/include/c++/15.1.0/cstring \
- C:/mingw64/include/c++/15.1.0/array \
- C:/mingw64/include/c++/15.1.0/compare \
- C:/mingw64/include/c++/15.1.0/memory \
- C:/mingw64/include/c++/15.1.0/bits/stl_raw_storage_iter.h \
- C:/mingw64/include/c++/15.1.0/bits/align.h \
- C:/mingw64/include/c++/15.1.0/bits/shared_ptr_atomic.h \
- C:/mingw64/include/c++/15.1.0/bits/atomic_base.h \
- C:/mingw64/include/c++/15.1.0/bits/atomic_lockfree_defines.h \
- C:/mingw64/include/c++/15.1.0/backward/auto_ptr.h \
- C:/mingw64/include/c++/15.1.0/pstl/glue_memory_defs.h \
- C:/mingw64/include/c++/15.1.0/utility \
- C:/mingw64/include/c++/15.1.0/bits/stl_relops.h \
- C:/Users/wudiz/Desktop/sort/cpp/lib/onnxruntime/include/onnxruntime_cxx_inline.h \
  C:/mingw64/x86_64-w64-mingw32/include/psapi.h
