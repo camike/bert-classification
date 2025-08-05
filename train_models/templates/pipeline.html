@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<!-- 
+==================================================
+# 模型流水线管理界面 - HTML模板文件
+#
+# 功能说明：
+# - 提供完整的模型训练、转换、量化Web界面
+# - 包含以下主要功能模块：
+#   1. 数据集上传功能
+#   2. 完整训练流水线(run_all.py)
+#   3. 后训练流水线(post_training_all_in_one.py)
+#   4. 单独操作模块(转换/量化/测试)
+# - 实时显示执行进度和输出日志
+# - 支持结果和错误信息展示
+#
+# 文件结构：
+# - 头部：CSS样式定义
+# - 主体：四大功能模块
+# - 底部：JavaScript交互逻辑
+==================================================
+-->
+
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模型流水线管理</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .pipeline-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        .pipeline-card {
+            margin: 15px 0;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: white;
+        }
+        .model-selection label {
+            margin-right: 15px;
+        }
+        .output-display {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>模型训练与转换流水线</h1>
+        
+        <!-- Upload Dataset Section -->
+        <div class="pipeline-section">
+            <h2>1. 上传数据集</h2>
+            <input type="file" id="datasetFile" accept=".csv" class="input-field">
+            <button onclick="uploadDataset()" class="pipeline-btn">上传数据集</button>
+            <div id="uploadStatus"></div>
+        </div>
+        
+        <!-- Run All Pipeline Section -->
+        <div class="pipeline-section">
+            <h2>2. 完整训练流水线 (run_all.py)</h2>
+            <p>训练 → ONNX转换 → 动态量化</p>
+            <div class="model-selection">
+                <label><input type="radio" name="run_all_model" value="1" checked> 1. BERT</label>
+                <label><input type="radio" name="run_all_model" value="2"> 2. TinyBERT</label>
+                <label><input type="radio" name="run_all_model" value="3"> 3. TinyBERT蒸馏</label>
+            </div>
+            <button onclick="startRunAllPipeline()" class="pipeline-btn">开始完整流水线</button>
+        </div>
+        
+        <!-- Post Training Pipeline Section -->
+        <div class="pipeline-section">
+            <h2>3. 后训练流水线 (post_training_all_in_one.py)</h2>
+            <p>对已训练模型进行转换和量化</p>
+            <div class="model-selection">
+                <label><input type="radio" name="post_training_op" value="1"> 1. 模型转换</label>
+                <label><input type="radio" name="post_training_op" value="2"> 2. 模型量化</label>
+                <label><input type="radio" name="post_training_op" value="3"> 3. 精度测试</label>
+                <label><input type="radio" name="post_training_op" value="4" checked> 4. 完整流程</label>
+            </div>
+            <button onclick="startPostTrainingPipeline()" class="pipeline-btn">开始后训练流水线</button>
+        </div>
+        
+        <!-- Individual Operations Section -->
+        <div class="pipeline-section">
+            <h2>4. 单独操作</h2>
+            <div class="pipeline-card">
+                <h3>ONNX转换</h3>
+                <button onclick="startIndividualConversion()" class="pipeline-btn">运行 conversion.py</button>
+            </div>
+            <div class="pipeline-card">
+                <h3>模型量化</h3>
+                <button onclick="startIndividualQuantization()" class="pipeline-btn">运行 dynamic_quantization.py</button>
+            </div>
+            <div class="pipeline-card">
+                <h3>精度测试</h3>
+                <button onclick="startIndividualAccuracy()" class="pipeline-btn">运行 accuracy_summary.py</button>
+            </div>
+        </div>
+        
+        <!-- Progress Section -->
+        <div id="progressContainer" style="display: none;">
+            <h2>执行进度</h2>
+            <div class="progress-bar">
+                <div id="progressBar" class="progress-bar-fill"></div>
+            </div>
+            <div id="progressText">准备开始...</div>
+            <div id="progressPercent">0%</div>
+            <div id="stepInfo"></div>
+        </div>
+        
+        <!-- Output Display -->
+        <div id="outputContainer" style="display: none;">
+            <h2>执行输出</h2>
+            <div id="outputDisplay" class="output-display"></div>
+        </div>
+        
+        <!-- Results Section -->
+        <div id="resultsContainer" style="display: none;">
+            <h2>执行完成！</h2>
+            <div id="resultsDisplay"></div>
+        </div>
+        
+        <!-- Error Section -->
+        <div id="errorContainer" style="display: none;">
+            <h2>执行失败</h2>
+            <div id="errorMessage"></div>
+        </div>
+    </div>
+
+    <script>
+        function uploadDataset() {
+            const fileInput = document.getElementById('datasetFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('请选择数据集文件');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('dataset', file);
+            
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('uploadStatus').innerHTML = 
+                        '<span style="color: green;">✅ 数据集上传成功！</span>';
+                } else {
+                    document.getElementById('uploadStatus').innerHTML = 
+                        '<span style="color: red;">❌ 上传失败</span>';
+                }
+            })
+            .catch(error => {
+                console.error('Upload error:', error);
+                document.getElementById('uploadStatus').innerHTML = 
+                    '<span style="color: red;">❌ 上传失败</span>';
+            });
+        }
+        
+        function startRunAllPipeline() {
+            const selectedModel = document.querySelector('input[name="run_all_model"]:checked').value;
+            startPipeline('run_all_pipeline', { model_type: selectedModel });
+        }
+        
+        function startPostTrainingPipeline() {
+            const selectedOp = document.querySelector('input[name="post_training_op"]:checked').value;
+            startPipeline('post_training_pipeline', { operation: selectedOp });
+        }
+        
+        function startIndividualConversion() {
+            startPipeline('individual_conversion', {});
+        }
+        
+        function startIndividualQuantization() {
+            startPipeline('individual_quantization', {});
+        }
+        
+        function startIndividualAccuracy() {
+            startPipeline('individual_accuracy', {});
+        }
+        
+        function startPipeline(endpoint, data) {
+            document.getElementById('progressContainer').style.display = 'block';
+            document.getElementById('outputContainer').style.display = 'block';
+            document.getElementById('resultsContainer').style.display = 'none';
+            document.getElementById('errorContainer').style.display = 'none';
+            
+            fetch(`/${endpoint}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateProgress();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showError(error.message);
+            });
+        }
+        
+        function updateProgress() {
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const progressPercent = document.getElementById('progressPercent');
+            const stepInfo = document.getElementById('stepInfo');
+            const outputDisplay = document.getElementById('outputDisplay');
+            
+            fetch('/progress')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'training') {
+                        progressBar.style.width = data.progress + '%';
+                        progressText.textContent = data.message;
+                        progressPercent.textContent = Math.round(data.progress) + '%';
+                        
+                        if (data.current_step && data.total_steps) {
+                            stepInfo.textContent = `步骤 ${data.current_step}/${data.total_steps}`;
+                        }
+                        
+                        if (data.output) {
+                            outputDisplay.textContent = data.output;
+                            outputDisplay.scrollTop = outputDisplay.scrollHeight;
+                        }
+                        
+                        setTimeout(updateProgress, 1000);
+                    } else if (data.status === 'completed') {
+                        progressBar.style.width = '100%';
+                        progressText.textContent = data.message;
+                        progressPercent.textContent = '100%';
+                        
+                        if (data.output) {
+                            outputDisplay.textContent = data.output;
+                        }
+                        
+                        document.getElementById('progressContainer').style.display = 'none';
+                        document.getElementById('resultsContainer').style.display = 'block';
+                        document.getElementById('resultsDisplay').textContent = '流水线执行成功！';
+                    } else if (data.status === 'failed') {
+                        showError(data.message);
+                    } else {
+                        setTimeout(updateProgress, 1000);
+                    }
+                })
+                .catch(error => {
+                    console.error('Progress check failed:', error);
+                    setTimeout(updateProgress, 2000);
+                });
+        }
+        
+        function showError(message) {
+            document.getElementById('progressContainer').style.display = 'none';
+            document.getElementById('errorContainer').style.display = 'block';
+            document.getElementById('errorMessage').textContent = message;
+        }
+    </script>
+</body>
+</html>

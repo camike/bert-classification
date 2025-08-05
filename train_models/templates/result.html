@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<!-- 
+==================================================
+# 训练结果展示页面 - HTML模板文件
+#
+# 功能说明：
+# - 展示模型训练进度和最终结果
+# - 主要包含三个状态显示区域：
+#   1. 训练进度显示区
+#   2. 训练结果展示区
+#   3. 错误信息显示区
+# - 提供训练完成后的模型下载功能
+#
+# 页面结构：
+# 1. 头部：引入CSS样式表
+# 2. 主体：包含进度条、结果区和错误区
+# 3. 底部：引入JavaScript脚本
+==================================================
+-->
+
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>训练结果</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>训练进度</h1>
+        
+        <div id="progressContainer">
+            <div class="progress-bar">
+                <div id="progressBar" class="progress-bar-fill"></div>
+            </div>
+            <div id="progressText">准备开始训练...</div>
+            <div id="progressPercent">0%</div>
+        </div>
+        
+        <div id="resultsContainer" style="display: none;">
+            <h2>训练完成！</h2>
+            <div id="metricsDisplay"></div>
+            <div class="download-section">
+                <a id="downloadLink" href="#" class="download-btn">下载训练好的模型</a>
+                <div id="downloadSize"></div>
+            </div>
+        </div>
+        
+        <div id="errorContainer" style="display: none;">
+            <h2 class="error">训练出错</h2>
+            <div id="errorMessage"></div>
+            <a href="/" class="back-btn">返回首页</a>
+        </div>
+    </div>
+    
+    <script src="/static/script.js"></script>
+</body>
+</html>

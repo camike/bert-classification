@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<!--
+################################################
+# 本文件为Web界面的主页面模板
+#
+# 功能说明：
+# - 提供模型训练、转换、量化的Web界面
+# - 包含交互式测试和批量测试功能
+# - 实时显示训练进度和测试结果
+# - 支持文件上传和模型管理操作
+################################################
+-->
+
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BERT模型训练系统</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1>🤖 BERT模型训练系统</h1>
+            <p>一键完成训练 → ONNX转换 → 动态量化 → 测试</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Step 1: Upload Dataset -->
+            <div class="step-card">
+                <div class="step-header">
+                    <h2><span class="step-number">1</span> 上传数据集</h2>
+                </div>
+                <div class="step-body">
+                    <div class="file-upload-area" id="dropArea">
+                        <input type="file" id="datasetFile" accept=".csv" required>
+                        <div class="upload-icon">📁</div>
+                        <p>拖放CSV文件到这里或点击选择</p>
+                        <p class="file-info" id="fileInfo">未选择文件</p>
+                    </div>
+                    <button id="uploadBtn" class="btn btn-primary" disabled>上传数据集</button>
+                    <div id="uploadStatus" class="status-message"></div>
+                </div>
+            </div>
+
+            <!-- Step 2: Select Model -->
+            <div class="step-card" id="modelSelectionCard" style="display: none;">
+                <div class="step-header">
+                    <h2><span class="step-number">2</span> 选择模型类型</h2>
+                </div>
+                <div class="step-body">
+                    <div class="model-options">
+                        <label class="model-option">
+                            <input type="radio" name="model_type" value="1" checked>
+                            <div class="option-content">
+                                <h3>BERT</h3>
+                                <p>bert-base-chinese - 标准BERT模型</p>
+                            </div>
+                        </label>
+                        
+                        <label class="model-option">
+                            <input type="radio" name="model_type" value="2">
+                            <div class="option-content">
+                                <h3>TinyBERT</h3>
+                                <p>huawei-noah/TinyBERT_4L_zh - 轻量化模型</p>
+                            </div>
+                        </label>
+                        
+                        <label class="model-option">
+                            <input type="radio" name="model_type" value="3">
+                            <div class="option-content">
+                                <h3>TinyBERT蒸馏</h3>
+                                <p>自动训练BERT教师模型，然后进行蒸馏训练</p>
+                                <small>流程: BERT训练 → 蒸馏训练 → ONNX转换 → 量化</small>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Teacher Model Configuration (for distillation) -->
+                    <div id="teacherModelConfig" style="display: none;">
+                        <h4>教师模型配置</h4>
+                        <label class="checkbox-option">
+                            <input type="checkbox" id="useTeacherModel">
+                            使用预训练的教师模型
+                        </label>
+                        <div id="teacherModelPath" style="display: none;">
+                            <div class="file-upload-area" style="margin: 10px 0;">
+                                <input type="file" id="teacherModelFile" accept=".zip,.tar,.tar.gz" webkitdirectory directory>
+                                <div class="upload-icon">📁</div>
+                                <p>选择教师模型文件夹或压缩包</p>
+                                <p class="file-info" id="teacherFileInfo">未选择文件</p>
+                            </div>
+                            <button id="uploadTeacherBtn" class="btn btn-success" disabled>上传教师模型</button>
+                            <div id="teacherUploadStatus" class="status-message"></div>
+                        </div>
+                    </div>
+
+                    <button id="startTrainingBtn" class="btn btn-success">开始训练</button>
+                    <button id="stopTrainingBtn" class="btn btn-danger" style="display: none; margin-left: 10px;">终止训练</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Training Progress -->
+            <div class="step-card" id="progressCard" style="display: none;">
+                <div class="step-header">
+                    <h2><span class="step-number">3</span> 训练进度</h2>
+                </div>
+                <div class="step-body">
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-text" id="progressText">0%</div>
+                    </div>
+                    <div class="status-message" id="statusMessage">等待开始...</div>
+                    <div class="output-container">
+                        <h4>训练输出:</h4>
+                        <pre id="trainingOutput" class="output-text"></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Results with Testing Option -->
+            <div class="step-card" id="resultsCard" style="display: none;">
+                <div class="step-header">
+                    <h2><span class="step-number">4</span> 训练完成</h2>
+                </div>
+                <div class="step-body">
+                    <div class="results-info">
+                        <h3>✅ 训练成功完成!</h3>
+                        <p>生成的文件:</p>
+                        <ul id="completedFiles"></ul>
+                    </div>
+                    
+                    <!-- New Testing Module -->
+                    <div class="testing-module">
+                        <h3>🧪 模型测试</h3>
+                        <p>您可以选择测试模型性能或直接下载：</p>
+                        
+                        <div class="test-options">
+                            <button id="interactiveTestBtn" class="btn btn-test">🔍 手动测试模型</button>
+                            <button id="batchTestBtn" class="btn btn-test">📊 批量测试模型</button>
+                            <button id="downloadBtn" class="btn btn-primary">📥 直接下载模型</button>
+                        </div>
+                        
+                        <!-- Interactive Testing Panel -->
+                        <div id="testingPanel" class="testing-panel" style="display: none;">
+                            <h4>🔍 交互式测试</h4>
+                            <p>输入文本后按回车键即可测试，输入 "exit" 退出测试</p>
+                            
+                            <!-- Chat-like Testing Interface -->
+                            <div id="testChatContainer" class="test-chat-container">
+                                <div id="testChatHistory" class="test-chat-history">
+                                    <div class="system-message">
+                                        💡 开始测试！请输入要分类的文本...
+                                    </div>
+                                </div>
+                                
+                                <div class="test-input-container">
+                                    <input type="text" id="testChatInput" class="test-chat-input" 
+                                           placeholder="输入测试文本，按回车发送..." autofocus>
+                                    <button id="sendTestBtn" class="send-test-btn">发送</button>
+                                </div>
+                            </div>
+                            
+                            <div class="test-actions">
+                                <button id="clearHistoryBtn" class="btn btn-secondary">清空历史</button>
+                                <button id="finishTestBtn" class="btn btn-primary">完成测试并下载</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Batch Testing Panel -->
+                        <div id="batchTestPanel" class="testing-panel" style="display: none;">
+                            <h4>📊 批量测试</h4>
+                            <p>上传测试数据集CSV文件，格式：label,text</p>
+                            
+                            <div class="batch-test-upload">
+                                <input type="file" id="testDatasetFile" accept=".csv" class="file-input">
+                                <button id="uploadTestDatasetBtn" class="btn btn-secondary">上传测试集</button>
+                                <div id="testUploadStatus" class="status-message"></div>
+                            </div>
+                            
+                            <div id="batchTestControls" style="display: none;">
+                                <button id="runBatchTestBtn" class="btn btn-primary">开始批量测试</button>
+                                <div id="batchTestProgress" class="progress-container" style="display: none;">
+                                    <div class="progress-bar">
+                                        <div id="batchTestProgressBar" class="progress-fill"></div>
+                                    </div>
+                                    <div id="batchTestStatus" class="progress-text">准备中...</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Results Display -->
+                            <div id="batchTestResults" class="batch-results" style="display: none;">
+                                <h5>📈 测试结果</h5>
+                                <div id="metricsDisplay" class="metrics-display"></div>
+                                <div id="errorsDisplay" class="errors-display"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button id="backHomeBtn" class="btn btn-secondary">🏠 返回主页</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>© 2025年8月 BERT/TinyBERT 训练系统</p>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
